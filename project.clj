@@ -12,4 +12,5 @@
                  [org.apache.spark/spark-mllib_2.11 "2.1.0"]
                  [clj-time "0.12.2"]]
   :aot :all
+  :main powderkeg-example.core
   :repositories {"aliyun" "http://maven.aliyun.com/nexus/content/groups/public"})
