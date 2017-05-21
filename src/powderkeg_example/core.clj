@@ -16,7 +16,10 @@
                    txtf
                    (map #(clojure.string/split % #",") )
                    (filter #(> (count %) 7) )
-                   (map #(RowFactory/create (into-array (vector (nth % 0) (nth % 5) (nth % 4) (nth % 6)  (nth % 7)))))
+                   (map #(RowFactory/create
+                          (into-array
+                           (mapv % [0 5 4 6 7])
+                           )))
                    (distinct))]
     (.createDataFrame
      (->> keg/*sc* .sc (new SparkSession))
@@ -33,7 +36,8 @@
   (.show
    (.sql
     (->> keg/*sc* .sc (new SQLContext))
-    "SELECT * FROM customer"
+    "SELECT * FROM customer LIMIT 10"
     )
    )
   )
+
