@@ -13,7 +13,7 @@
 
 (def customer
   (let [;; 读取某个目录的某些文件*.csv: 返回JavaRDD
-        txtf (.textFile keg/*sc* "/Users/clojure/Datas/2000W/100-test.csv")
+        txtf (.textFile keg/*sc* "/Users/clojure/Datas/2000W/*.csv")
         ;; Powderkeg: 实时，不用aot，原生transducer处理数据, (keg/rdd (map ...) (filter ...) (mapcat ...)). keg/rdd是transducer, 就像"->"一样使用
         ;; 测试或者转为Clojure输出: 要(into [] (keg/rdd ...))转为Clojure处理
         maped-rdd (keg/rdd
@@ -46,7 +46,7 @@
   )
 
 (comment
-  ;; 注册table表格
+  ;; 注册table表格,如果SQL有语法错误就需要重新createOrReplaceTempView一下表格
   (.createOrReplaceTempView customer "customer")
   ;; 最终show出来,打印在repl里面,不会再Emacs返回
   (.show
@@ -55,7 +55,8 @@
     ;; SparkContext是基于rdd, SparkSession是基于DataFrame的
     ;; 从javaSparkContext得到scala版本的SparkContext
     (->> keg/*sc* .sc (new SQLContext))
-    "SELECT * FROM customer LIMIT 10"
+    ;; 这里会分成几十上百个Job去读取所有的csv文件, 转为HadoopRDD去查询, 最后reduce结果在一起
+    "SELECT * FROM customer where name = 'Steve Chen'"
     )
    )
   )
