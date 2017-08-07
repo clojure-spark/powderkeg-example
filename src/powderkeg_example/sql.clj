@@ -6,7 +6,12 @@
    [org.apache.spark.sql SparkSession SQLContext]
    [org.apache.spark.sql.types StringType StructField StructType]
    [org.apache.spark.sql.types DataTypes]
-   [org.apache.spark.sql Row SaveMode RowFactory]))
+   [org.apache.spark.sql Row SaveMode RowFactory]
+   ;; mllib
+   [breeze.linalg DenseVector]
+   [org.apache.spark.mllib.linalg Vectors]
+   [org.apache.spark.mllib.regression StreamingLinearRegressionWithSGD LabeledPoint]
+   [org.apache.spark.streaming Seconds StreamingContext]))
 
 ;; "local[*]" 连接本地的spark
 (keg/connect! "local")
